@@ -11,8 +11,6 @@ import (
 )
 
 var url string = "https://jsonplaceholder.typicode.com/posts/"
-var c chan string
-var result string
 
 func makeRequest(url string) {
 	resp, err := http.Get(url)

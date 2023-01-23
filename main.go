@@ -1,36 +1,33 @@
-// GET REQUEST FROM https://jsonplaceholder.typicode.com/
+	// WRITE POSTS FROM GET REQUEST
 
 package main
 
 import (
-	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
 
 var url string = "https://jsonplaceholder.typicode.com/posts/"
 
-func makeRequest(url string) {
-	resp, err := http.Get(url)
-	if err != nil {panic(err)}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {panic(err)}
-
-	defer resp.Body.Close()
-
-	result = string(body)
-
-	fmt.Println(result)
+func main()  {
+	go makeRequestConcurrent()
+	time.Sleep(2 * time.Second)
+	
 }
 
-func main()  {
-	// makeRequest(url)
-	// GET REQUEST FROM https://jsonplaceholder.typicode.com/ USING CONCURRENCY (GOROUTINES)
+func makeRequestConcurrent() {
 	for i := 1; i <= 100; i++ {
-		go makeRequest(url + strconv.Itoa(i))
+		resp, err := http.Get(url + strconv.Itoa(i))
+		if err != nil {panic(err)}
+		body,err := io.ReadAll(resp.Body)
+		if err != nil {panic(err)}
+		result := string(body)
+		f, err := os.Create("post" + strconv.Itoa(i) + ".txt")
+		if err != nil {panic(err)}
+		f.WriteString(result)
 	}
-	time.Sleep(2 * time.Second)	
+	return
 }

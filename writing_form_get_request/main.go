@@ -14,7 +14,7 @@ var url string = "https://jsonplaceholder.typicode.com/posts/"
 
 func main()  {
 	go makeRequestConcurrent()
-	time.Sleep(2 * time.Second)
+	time.Sleep(1 * time.Second)
 	
 }
 

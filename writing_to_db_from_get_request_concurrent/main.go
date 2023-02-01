@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -30,34 +31,34 @@ func getRequest(url string, /**data chan string**/) {
 	body, _ := io.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	// data <- string(body)
-	// fmt.Println(string(body))
-	writeToDB(string(body))
+	fmt.Println(string(body))
 }
 
-func writeToDB(values string) {
+func writeToDB() {
 	//Connecting to DB
-	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:8889)/comments")
+	pass := os.Getenv("MYSQL_PASSWORD")
+	db, err := sql.Open("mysql", "root:"+pass+"@tcp(127.0.0.1:3306)/nix_beginner")
 	if err != nil {panic(err)}
 	defer db.Close()
 
-	fmt.Println("Connetcted to MySQL")
+	fmt.Println("Connection installed")
 
 	//Inserting data
-	insert, err := db.Query("INSERT INTO `posts` (`userId`, `id`, `title`, `body`)", values)
-	if err != nil {panic(err)}
-	defer insert.Close()
+	
 }
 
 func main() {
-	urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
+	// urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
 	// urlComments := "https://jsonplaceholder.typicode.com/comments?postId=7"
 	// dataPosts := make(chan string)
 	// dataComments := make(chan string)
 
-	/**go**/ getRequest(urlPosts, /**dataPosts**/)
+	// /**go**/ getRequest(urlPosts, /**dataPosts**/)
 	// fmt.Println(<- dataPosts)
 	// close(dataPosts)
 	// go getRequest(urlComments, /**dataComments**/)
 	// fmt.Println(<- dataComments)
 	// close(dataComments)
+
+	writeToDB()
 }

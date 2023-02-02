@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"github.com/joho/godotenv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -36,6 +37,7 @@ func getRequest(url string, /**data chan string**/) {
 
 func writeToDB() {
 	//Connecting to DB
+	if err := godotenv.Load(); err != nil {panic(err)}
 	pass := os.Getenv("MYSQL_PASSWORD")
 	db, err := sql.Open("mysql", "root:"+pass+"@tcp(127.0.0.1:3306)/nix_beginner")
 	if err != nil {panic(err)}
@@ -44,7 +46,9 @@ func writeToDB() {
 	fmt.Println("Connection installed")
 
 	//Inserting data
-	
+	insert, err := db.Query("INSERT INTO `posts` (`userId`, `id`, `title`, `body`) VALUES(1, 1, 'mr', 'lakshlasfa')")
+	if err != nil {panic(err)}
+	defer insert.Close()
 }
 
 func main() {

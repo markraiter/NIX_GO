@@ -3,13 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"github.com/joho/godotenv"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 )
+
+var db *sql.DB
 
 // type Posts struct {
 // 	UserId int `json:"userId"`
@@ -26,43 +26,24 @@ import (
 // 	Body string `json:"body"`
 // }
 
-func getRequest(url string, /**data chan string**/) {
-	resp, err := http.Get(url)
-	if err != nil {panic(err)}
-	body, _ := io.ReadAll(resp.Body)
-	defer resp.Body.Close()
-	// data <- string(body)
-	fmt.Println(string(body))
-}
-
-func writeToDB() {
-	//Connecting to DB
+func main() {
+	// Install environment variables
 	if err := godotenv.Load(); err != nil {panic(err)}
-	pass := os.Getenv("MYSQL_PASSWORD")
-	db, err := sql.Open("mysql", "root:"+pass+"@tcp(127.0.0.1:3306)/nix_beginner")
+	//Capture connection properties
+	cfg := mysql.Config {
+		User: os.Getenv("DB_USER"),
+		Passwd: os.Getenv("DB_PASS"),
+		Net: "tcp",
+		Addr: "127.0.0.1:3306",
+		DBName: "nix_beginner",
+	}
+	// Get a database handle
+	var err error
+	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {panic(err)}
 	defer db.Close()
 
+	pingErr := db.Ping()
+	if pingErr != nil {panic(err)}
 	fmt.Println("Connection installed")
-
-	//Inserting data
-	insert, err := db.Query("INSERT INTO `posts` (`userId`, `id`, `title`, `body`) VALUES(1, 1, 'mr', 'lakshlasfa')")
-	if err != nil {panic(err)}
-	defer insert.Close()
-}
-
-func main() {
-	// urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
-	// urlComments := "https://jsonplaceholder.typicode.com/comments?postId=7"
-	// dataPosts := make(chan string)
-	// dataComments := make(chan string)
-
-	// /**go**/ getRequest(urlPosts, /**dataPosts**/)
-	// fmt.Println(<- dataPosts)
-	// close(dataPosts)
-	// go getRequest(urlComments, /**dataComments**/)
-	// fmt.Println(<- dataComments)
-	// close(dataComments)
-
-	writeToDB()
 }

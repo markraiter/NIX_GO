@@ -38,7 +38,6 @@ func main() {
 		DBName: "nix_beginner",
 	}
 	// Get a database handle
-	var err error
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {panic(err)}
 	defer db.Close()

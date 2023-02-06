@@ -65,12 +65,12 @@ func main() {
 
 	// parse JSON to struct Posts
 	dataPosts := Posts{}
-	err = json.Unmarshal([]byte(bodyPosts), &dataPosts)
+	json.Unmarshal([]byte(bodyPosts), &dataPosts)
 	if err != nil {panic(err)}
 
 	// parse JSON to struct Comments
 	dataComments := Comments{}
-	err = json.Unmarshal([]byte(bodyComments), &dataComments)
+	json.Unmarshal([]byte(bodyComments), &dataComments)
 	if err != nil {panic(err)}
 
 	// write data (posts) to DB

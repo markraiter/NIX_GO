@@ -2,30 +2,32 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 )
 
-var db *sql.DB
+// var db *sql.DB
 
-// type Posts struct {
-// 	UserId int `json:"userId"`
-// 	Id int `json:"id"`
-// 	Title string `json:"title"`
-// 	Body string `json:"body"`
-// }
+type Posts struct {
+	UserId int `json:"userId"`
+	Id int `json:"id"`
+	Title string `json:"title"`
+	Body string `json:"body"`
+}
 
-// type Comments struct {
-// 	PostId int `json:"postId"`
-// 	Id int `json:"id"`
-// 	Name string `json:"name"`
-// 	Email string `json:"email"`
-// 	Body string `json:"body"`
-// }
+type Comments struct {
+	PostId int `json:"postId"`
+	Id int `json:"id"`
+	Name string `json:"name"`
+	Email string `json:"email"`
+	Body string `json:"body"`
+}
 
 func main() {
 	// Install environment variables
@@ -42,26 +44,35 @@ func main() {
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {panic(err)}
 	defer db.Close()
-
 	pingErr := db.Ping()
 	if pingErr != nil {panic(err)}
 	fmt.Println("Connection installed")
 	// request dataPosts from URL
 	urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
-	
-	resp1, err := http.Get(urlPosts)
+	respPosts, err := http.Get(urlPosts)
 	if err != nil {panic(err)}
-	defer resp1.Body.Close()
-	body1, _ := io.ReadAll(resp1.Body)
-	dataPosts := string(body1)
-	fmt.Println(dataPosts)
+	defer respPosts.Body.Close()
+	bodyPosts, _ := io.ReadAll(respPosts.Body)
 	// request dataComments from URL
 	urlComments := "https://jsonplaceholder.typicode.com/comments?postId=7"
-	
-	resp2, err := http.Get(urlComments)
+	respComments, err := http.Get(urlComments)
 	if err != nil {panic(err)}
-	defer resp2.Body.Close()
-	body2, _ := io.ReadAll(resp2.Body)
-	dataComments := string(body2)
-	fmt.Println(dataComments)
+	defer respComments.Body.Close()
+	bodyComments, _ := io.ReadAll(respComments.Body)
+	// parse JSON to struct Posts
+	dataPosts := Posts{}
+	err = json.Unmarshal([]byte(bodyPosts), &dataPosts)
+	if err != nil {panic(err)}
+	// parse JSON to struct Comments
+	dataComments := Comments{}
+	err = json.Unmarshal([]byte(bodyComments), &dataComments)
+	if err != nil {panic(err)}
+	// write data (posts) to DB
+	insertPosts, err := db.Query("INSERT INTO posts (userId, id, title, body) VALUES (?, ?, ?, ?)", dataPosts.UserId, dataPosts.Id, dataPosts.Title, dataPosts.Body)
+	if err != nil {panic(err)}
+	defer insertPosts.Close()
+	// write data (comments) to DB
+	insertComments, err := db.Query("INSERT INTO posts (userId, id, title, body) VALUES (?, ?, ?, ?)", dataPosts.UserId, dataPosts.Id, dataPosts.Title, dataPosts.Body)
+	if err != nil {panic(err)}
+	defer insertComments.Close()
 }

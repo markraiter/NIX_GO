@@ -40,6 +40,7 @@ func main() {
 		Addr: "127.0.0.1:3306",
 		DBName: "nix_beginner",
 	}
+	
 	// Get a database handle
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {panic(err)}
@@ -47,32 +48,38 @@ func main() {
 	pingErr := db.Ping()
 	if pingErr != nil {panic(err)}
 	fmt.Println("Connection installed")
+
 	// request dataPosts from URL
 	urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
 	respPosts, err := http.Get(urlPosts)
 	if err != nil {panic(err)}
 	defer respPosts.Body.Close()
 	bodyPosts, _ := io.ReadAll(respPosts.Body)
+
 	// request dataComments from URL
 	urlComments := "https://jsonplaceholder.typicode.com/comments?postId=7"
 	respComments, err := http.Get(urlComments)
 	if err != nil {panic(err)}
 	defer respComments.Body.Close()
 	bodyComments, _ := io.ReadAll(respComments.Body)
+
 	// parse JSON to struct Posts
 	dataPosts := Posts{}
 	err = json.Unmarshal([]byte(bodyPosts), &dataPosts)
 	if err != nil {panic(err)}
+
 	// parse JSON to struct Comments
 	dataComments := Comments{}
 	err = json.Unmarshal([]byte(bodyComments), &dataComments)
 	if err != nil {panic(err)}
+
 	// write data (posts) to DB
 	insertPosts, err := db.Query("INSERT INTO posts (userId, id, title, body) VALUES (?, ?, ?, ?)", dataPosts.UserId, dataPosts.Id, dataPosts.Title, dataPosts.Body)
 	if err != nil {panic(err)}
 	defer insertPosts.Close()
+
 	// write data (comments) to DB
-	insertComments, err := db.Query("INSERT INTO posts (userId, id, title, body) VALUES (?, ?, ?, ?)", dataPosts.UserId, dataPosts.Id, dataPosts.Title, dataPosts.Body)
+	insertComments, err := db.Query("INSERT INTO comments (postId, id, name, email, body) VALUES (?, ?, ?, ?, ?)", dataComments.PostId, dataComments.Id, dataComments.Name, dataComments.Email, dataComments.Body)
 	if err != nil {panic(err)}
 	defer insertComments.Close()
 }

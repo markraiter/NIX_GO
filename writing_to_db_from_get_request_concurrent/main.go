@@ -3,10 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
-	"github.com/joho/godotenv"
-
 	"github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 var db *sql.DB
@@ -45,4 +46,22 @@ func main() {
 	pingErr := db.Ping()
 	if pingErr != nil {panic(err)}
 	fmt.Println("Connection installed")
+	// request dataPosts from URL
+	urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
+	
+	resp1, err := http.Get(urlPosts)
+	if err != nil {panic(err)}
+	defer resp1.Body.Close()
+	body1, _ := io.ReadAll(resp1.Body)
+	dataPosts := string(body1)
+	fmt.Println(dataPosts)
+	// request dataComments from URL
+	urlComments := "https://jsonplaceholder.typicode.com/comments?postId=7"
+	
+	resp2, err := http.Get(urlComments)
+	if err != nil {panic(err)}
+	defer resp2.Body.Close()
+	body2, _ := io.ReadAll(resp2.Body)
+	dataComments := string(body2)
+	fmt.Println(dataComments)
 }

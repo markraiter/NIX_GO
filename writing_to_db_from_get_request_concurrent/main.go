@@ -55,7 +55,6 @@ func main() {
 	}
 	fmt.Println("Connection installed")
 
-	// request dataPosts from URL
 	urlPosts := "https://jsonplaceholder.typicode.com/posts?userId=7"
 	urlComments := "https://jsonplaceholder.typicode.com/comments?postId=7"
 
@@ -63,39 +62,41 @@ func main() {
 	comments := getComments(urlComments)
 
 	// Insert posts into DB
-
-	insertPosts, err := db.Exec("INSERT INTO posts (userId, id, title, body) VALUES (?, ?, ?, ?)", posts.UserId, posts.Id, posts.Title, posts.Body)
-	if err != nil {
-		fmt.Println(err.Error())
+	for i := range posts {
+		insertPosts, err := db.Exec("INSERT INTO posts (userId, id, title, body) VALUES (?, ?, ?, ?)", posts[i].UserId, posts[i].Id, posts[i].Title, posts[i].Body)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		rowsPosts, err := insertPosts.LastInsertId()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Println(rowsPosts)
 	}
-	rowsPosts, err := insertPosts.LastInsertId()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(rowsPosts)
 
 	// Insert comments into DB
-	insertComments, err := db.Exec("INSERT INTO comments (postId, id, name, email, body) VALUES (?, ?, ?, ?, ?)", comments.PostId, comments.Id, comments.Name, comments.Email, comments.Body)
-	if err != nil {
-		fmt.Println(err.Error())
+	for v := range comments {
+		insertComments, err := db.Exec("INSERT INTO comments (postId, id, name, email, body) VALUES (?, ?, ?, ?, ?)", comments[v].PostId, comments[v].Id, comments[v].Name, comments[v].Email, comments[v].Body)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		rowsComments, err := insertComments.LastInsertId()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Println(rowsComments)
 	}
-	rowsComments, err := insertComments.LastInsertId()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(rowsComments)
-
 }
 
 // Fetch posts into struct
-func getPosts(url string) Posts {
+func getPosts(url string) []Posts {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
-	var p Posts
+	var p []Posts
 	parseError := json.Unmarshal(body, &p)
 	if parseError != nil {
 		fmt.Println(parseError.Error())
@@ -104,14 +105,14 @@ func getPosts(url string) Posts {
 }
 
 // Fetch comments into struct
-func getComments(url string) Comments {
+func getComments(url string) []Comments {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
-	var c Comments
+	var c []Comments
 	parseError := json.Unmarshal(body, &c)
 	if parseError != nil {
 		fmt.Println(parseError.Error())

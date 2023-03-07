@@ -17,14 +17,16 @@ func main() {
 	e := echo.New()
 
 	// Operations with posts
-	e.POST("/posts", controllers.PostsCreate)
-	e.PUT("/posts/:id", controllers.PostsUdate)
-	e.GET("/posts", controllers.PostsIndex)
-	e.GET("/posts/:id", controllers.PostsShow)
-	e.DELETE("/posts/:id", controllers.PostsDelete)
+	e.GET("/posts", controllers.GetPosts(initializers.DB))
+	e.GET("/posts/:id", controllers.CreatePost(initializers.DB))
+	e.POST("/posts", controllers.GetPosts(initializers.DB))
+	e.PUT("/posts/:id", controllers.UpdatePost(initializers.DB))
+	e.DELETE("/posts/:id", controllers.DeletePost(initializers.DB))
 
 	//Operations with comments
-	
+	e.POST("/posts/:postId/comments", controllers.CreateComment(initializers.DB))
+	e.PUT("/comments/:id", controllers.UpdateComment(initializers.DB))
+	e.DELETE("/comments/:id", controllers.DeleteComment(initializers.DB))
 
-	e.Start(os.Getenv("SERVER_PORT"))
+	e.Logger.Fatal(e.Start(os.Getenv("SERVER_PORT")))
 }

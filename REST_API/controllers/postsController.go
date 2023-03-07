@@ -1,71 +1,122 @@
 package controllers
 
 import (
+	"encoding/xml"
 	"net/http"
+	"strconv"
 
 	"example.com/REST_API/initializers"
 	"example.com/REST_API/models"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
-func PostsCreate(c echo.Context) error {
-	var body struct {
-		Body string
-		Title string
-	}
+// Getting posts
+func GetPosts(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		responseType := c.QueryParam("type")
+		if responseType != "xml" {
+			responseType = "json"
+		}
 
-	c.Bind(&body)
+		posts := []models.Post{}
+		if err := db.Preload("Comments").Find(&posts).Error; err != nil {
+			return c.String(http.StatusInternalServerError, "Error fetching posts")
+		}
 
-	post := models.Post{
-		Title: body.Title,
-		Body: body.Body,
+		if responseType == "xml" {
+			xmlResponse, err := xml.MarshalIndent(posts, "", " ")
+			if err != nil {
+				return c.String(http.StatusInternalServerError, "Error encoding XML")
+			}
+			c.Response().Header().Set("Content-Type", "application/xml")
+			return c.Blob(http.StatusOK, "application/xml", xmlResponse)
+		} else {
+			c.Response().Header().Set("Content-Type", "application/json")
+			return c.JSON(http.StatusOK, posts)
+		}
 	}
-	result := initializers.DB.Create(&post)
-
-	if result.Error != nil {
-		return c.String(http.StatusBadRequest, "")
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{"post": post})
 }
 
-func PostsIndex(c echo.Context) error {
-	var posts []models.Post
-	initializers.DB.First(&posts)
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"posts": posts})
-}
+// Creating post
+func CreatePost(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		post := new(models.Post)
+		if err := c.Bind(post); err != nil {
+			return c.String(http.StatusBadRequest, "Invalid post data")
+		}
 
-func PostsShow(c echo.Context) error {
-	id := c.Param("id")
-	var post models.Post
-	initializers.DB.First(&post, id)
+		if err := initializers.DB.Create(post).Error; err != nil {
+			return c.String(http.StatusInternalServerError, "Error creating post")
+		}
 
-	return c.JSON(http.StatusOK, map[string]interface{} {"post": post})
-}
-
-func PostsUdate(c echo.Context) error {
-	id := c.Param("id")
-	var body struct {
-		Body string
-		Title string
+		return c.JSON(http.StatusCreated, post)
 	}
-
-	c.Bind(&body)
-
-	var post models.Post
-	initializers.DB.First(&post, id)
-
-	initializers.DB.Model(&post).Updates(models.Post{
-		Title: body.Title,
-		Body: body.Body,
-	})
-
-	return c.JSON(http.StatusOK, map[string]interface{} {"post": post})
 }
 
-func PostsDelete(c echo.Context) error {
-	id := c.Param("id")
-	initializers.DB.Delete(&models.Post{}, id)
 
-	return c.String(http.StatusOK, "")
+// Getting post by id
+func GetPost(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		postID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.String(http.StatusBadRequest, "Invalid post id")
+		}
+
+		post := new(models.Post)
+		if err := initializers.DB.Preload("Comments").First(post, postID).Error; err != nil {
+			return c.String(http.StatusNotFound, "Post not found")
+		}
+
+		return c.JSON(http.StatusOK, post)
+	}
+}
+
+
+// Updating post
+func UpdatePost(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		postID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.String(http.StatusBadRequest, "Invalid post ID")
+		}
+
+		post := new(models.Post)
+		if err := initializers.DB.First(post, postID).Error; err != nil {
+			return c.String(http.StatusNotFound, "Post not found")
+		}
+
+		if err := c.Bind(post); err != nil {
+			return c.String(http.StatusBadRequest, "Invalid post data")
+		}
+
+		if err := initializers.DB.Save(post).Error; err != nil {
+			return c.String(http.StatusInternalServerError, "Error updating post")
+		}
+
+		return c.JSON(http.StatusOK, post)
+	}
+}
+
+
+// Deleting post
+func DeletePost(db *gorm.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		postID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.String(http.StatusBadRequest, "Invalid post ID")
+		}
+
+		post := new(models.Post)
+		if err := initializers.DB.First(post, postID).Error; err != nil {
+			return c.String(http.StatusNotFound, "Post not found")
+		}
+
+		if err := initializers.DB.Delete(post).Error; err != nil {
+			return c.String(http.StatusInternalServerError, "Error deleting post")
+		}
+
+		return c.NoContent(http.StatusNoContent)
+	}
 }

@@ -6,11 +6,23 @@ import (
 
 	"example.com/REST_API/initializers"
 	"example.com/REST_API/models"
+	_ "example.com/REST_API/cmd/docs"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 // Creating comment
+// @Summary Create a new comment for a post
+// @Description Create a new comment for a post with the specified data.
+// @Accept  json
+// @Produce  json
+// @Param post_id path int true "Post ID"
+// @Param comment body Comment true "Comment data"
+// @Success 201 {object} Comment
+// @Failure 400 {string} string "Invalid comment data"
+// @Failure 404 {string} string "Post not found"
+// @Failure 500 {string} string "Error creating comment"
+// @Router /posts/{post_id}/comments [post]
 func CreateComment(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("postId"))
@@ -40,6 +52,17 @@ func CreateComment(db *gorm.DB) echo.HandlerFunc {
 
 
 // Updating comment
+// @Summary Update a comment by ID
+// @Description Update a comment in the database by ID.
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Comment ID"
+// @Param comment body Comment true "Comment data"
+// @Success 200 {object} Comment
+// @Failure 400 {string} string "Invalid comment data"
+// @Failure 404 {string} string "Comment not found"
+// @Failure 500 {string} string "Error updating comment"
+// @Router /comments/{id} [put]
 func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		commentID, err := strconv.Atoi(c.Param("id"))
@@ -66,6 +89,15 @@ func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 
 
 // Deleting comment
+// @Summary Delete a comment by ID
+// @Description Delete a comment from the database by ID.
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Comment ID"
+// @Success 204 "Comment deleted successfully"
+// @Failure 404 {string} string "Comment not found"
+// @Failure 500 {string} string "Error deleting comment"
+// @Router /comments/{id} [delete]
 func DeleteComment(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		commentID, err := strconv.Atoi(c.Param("id"))

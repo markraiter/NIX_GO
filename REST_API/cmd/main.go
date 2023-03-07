@@ -6,6 +6,9 @@ import (
 	"example.com/REST_API/controllers"
 	"example.com/REST_API/initializers"
 	"github.com/labstack/echo/v4"
+	"github.com/swaggo/echo-swagger"
+
+	_ "example.com/REST_API/cmd/docs"
 )
 
 func init() {
@@ -13,8 +16,17 @@ func init() {
 	initializers.ConnectToDB()
 }
 
+// @title Echo Swagger Example REST_API
+// @description Example REST_API for demonstrating Swagger with Echo framework.
+// @version 1.0.0.
+// @host localhost:8080
+// @BasePath /
 func main() {
 	e := echo.New()
+
+	// Serve the Swagger documentation
+	swagHandler := echoSwagger.WrapHandler
+	e.GET("/swagger/*", swagHandler)
 
 	// Operations with posts
 	e.GET("/posts", controllers.GetPosts(initializers.DB))

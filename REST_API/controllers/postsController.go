@@ -7,11 +7,18 @@ import (
 
 	"example.com/REST_API/initializers"
 	"example.com/REST_API/models"
+	_ "example.com/REST_API/cmd/docs"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 // Getting posts
+// @Summary Get all posts
+// @Description Get all posts from the database.
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} Post
+// @Router /posts [get]
 func GetPosts(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		responseType := c.QueryParam("type")
@@ -40,6 +47,15 @@ func GetPosts(db *gorm.DB) echo.HandlerFunc {
 
 
 // Creating post
+// @Summary Create a new post
+// @Description Create a new post with the specified data.
+// @Accept  json
+// @Produce  json
+// @Param post body Post true "Post data"
+// @Success 201 {object} Post
+// @Failure 400 {string} string "Invalid post data"
+// @Failure 500 {string} string "Error creating post"
+// @Router /posts [post]
 func CreatePost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		post := new(models.Post)
@@ -57,6 +73,14 @@ func CreatePost(db *gorm.DB) echo.HandlerFunc {
 
 
 // Getting post by id
+// @Summary Get a post by ID
+// @Description Get a post from the database by ID.
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Post ID"
+// @Success 200 {object} Post
+// @Failure 404 {string} string "Post not found"
+// @Router /posts/{id} [get]
 func GetPost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("id"))
@@ -75,6 +99,17 @@ func GetPost(db *gorm.DB) echo.HandlerFunc {
 
 
 // Updating post
+// @Summary Update a post by ID
+// @Description Update a post in the database by ID.
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Post ID"
+// @Param post body Post true "Post data"
+// @Success 200 {object} Post
+// @Failure 400 {string} string "Invalid post data"
+// @Failure 404 {string} string "Post not found"
+// @Failure 500 {string} string "Error updating post"
+// @Router /posts/{id} [put]
 func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("id"))
@@ -101,6 +136,15 @@ func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 
 
 // Deleting post
+// @Summary Delete a post by ID
+// @Description Delete a post from the database by ID.
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Post ID"
+// @Success 204 "Post deleted successfully"
+// @Failure 404 {string} string "Post not found"
+// @Failure 500 {string} string "Error deleting post"
+// @Router /posts/{id} [delete]
 func DeletePost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("id"))

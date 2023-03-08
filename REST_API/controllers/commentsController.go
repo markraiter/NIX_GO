@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// Creating comment
+// Creating comment godoc
 // @Summary Create a new comment for a post
 // @Description Create a new comment for a post with the specified data.
 // @Accept  json
@@ -51,7 +51,7 @@ func CreateComment(db *gorm.DB) echo.HandlerFunc {
 }
 
 
-// Updating comment
+// Updating comment godoc
 // @Summary Update a comment by ID
 // @Description Update a comment in the database by ID.
 // @Accept  json
@@ -88,7 +88,7 @@ func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 }
 
 
-// Deleting comment
+// Deleting comment godoc
 // @Summary Delete a comment by ID
 // @Description Delete a comment from the database by ID.
 // @Accept  json

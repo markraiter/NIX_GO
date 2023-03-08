@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// Getting posts
+// Getting posts godoc
 // @Summary Get all posts
 // @Description Get all posts from the database.
 // @Accept  json
@@ -47,7 +47,7 @@ func GetPosts(db *gorm.DB) echo.HandlerFunc {
 }
 
 
-// Creating post
+// Creating post godoc
 // @Summary Create a new post
 // @Description Create a new post with the specified data.
 // @Accept  json
@@ -73,7 +73,7 @@ func CreatePost(db *gorm.DB) echo.HandlerFunc {
 }
 
 
-// Getting post by id
+// Getting post by id godoc
 // @Summary Get a post by ID
 // @Description Get a post from the database by ID.
 // @Accept  json
@@ -99,7 +99,7 @@ func GetPost(db *gorm.DB) echo.HandlerFunc {
 }
 
 
-// Updating post
+// Updating post godoc
 // @Summary Update a post by ID
 // @Description Update a post in the database by ID.
 // @Accept  json
@@ -136,7 +136,7 @@ func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 }
 
 
-// Deleting post
+// Deleting post godoc
 // @Summary Delete a post by ID
 // @Description Delete a post from the database by ID.
 // @Accept  json

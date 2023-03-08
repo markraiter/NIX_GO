@@ -16,11 +16,11 @@ func init() {
 	initializers.ConnectToDB()
 }
 
-// @Title Echo Swagger Example REST_API
-// @Description Example REST_API for demonstrating Swagger with Echo framework.
-// @Version 1.0.0.
-// @Host localhost:8080
-// @BasePath /
+// @title Echo Swagger Example REST_API
+// @description Example REST_API for demonstrating Swagger with Echo framework.
+// @version 1.0.0.
+// @host localhost:8080
+// @basePath /
 func main() {
 	e := echo.New()
 

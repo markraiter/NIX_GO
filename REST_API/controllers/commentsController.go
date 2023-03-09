@@ -16,6 +16,7 @@ import (
 // Creating comment godoc
 // @Summary Create a new comment for a post
 // @Description Create a new comment for a post with the specified data.
+// @Tags Comments
 // @Accept  json
 // @Produce  json
 // @Param post_id path int true "Post ID"
@@ -56,6 +57,7 @@ func CreateComment(db *gorm.DB) echo.HandlerFunc {
 // Updating comment godoc
 // @Summary Update a comment by ID
 // @Description Update a comment in the database by ID.
+// @Tags Comments
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Comment ID"
@@ -93,6 +95,7 @@ func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 // Deleting comment godoc
 // @Summary Delete a comment by ID
 // @Description Delete a comment from the database by ID.
+// @Tags Comments
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Comment ID"

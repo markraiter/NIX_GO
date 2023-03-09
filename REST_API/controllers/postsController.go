@@ -17,8 +17,10 @@ import (
 // Getting posts godoc
 // @Summary Get all posts
 // @Description Get all posts from the database.
+// @Tags Posts
 // @Accept  json
 // @Produce  json
+// @Produce  xml
 // @Success 200 {array} models.Post
 // @Failure 500 {string} string "Error fetching post"
 // @Router /posts [get]
@@ -52,6 +54,7 @@ func GetPosts(db *gorm.DB) echo.HandlerFunc {
 // Creating post godoc
 // @Summary Create a new post
 // @Description Create a new post with the specified data.
+// @Tags Posts
 // @Accept  json
 // @Produce  json
 // @Param post body models.Post true "Post data"
@@ -78,6 +81,7 @@ func CreatePost(db *gorm.DB) echo.HandlerFunc {
 // Getting post by id godoc
 // @Summary Get a post by ID
 // @Description Get a post from the database by ID.
+// @Tags Posts
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Post ID"
@@ -104,6 +108,7 @@ func GetPost(db *gorm.DB) echo.HandlerFunc {
 // Updating post godoc
 // @Summary Update a post by ID
 // @Description Update a post in the database by ID.
+// @Tags Posts
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Post ID"
@@ -141,6 +146,7 @@ func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 // Deleting post godoc
 // @Summary Delete a post by ID
 // @Description Delete a post from the database by ID.
+// @Tags Posts
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Post ID"

@@ -1,4 +1,4 @@
-basePath: /
+basePath: /api/v1
 definitions:
   models.Comment:
     properties:
@@ -35,7 +35,7 @@ info:
   title: Echo Swagger Example REST_API
   version: 1.0.0.
 paths:
-  /comments/{id}:
+  /api/v1/comments/{id}:
     delete:
       consumes:
       - application/json
@@ -100,7 +100,7 @@ paths:
       summary: Update a comment by ID
       tags:
       - Comments
-  /posts:
+  /api/v1/posts:
     get:
       consumes:
       - application/json
@@ -151,7 +151,7 @@ paths:
       summary: Create a new post
       tags:
       - Posts
-  /posts/{id}:
+  /api/v1/posts/{id}:
     delete:
       consumes:
       - application/json
@@ -240,7 +240,7 @@ paths:
       summary: Update a post by ID
       tags:
       - Posts
-  /posts/{post_id}/comments:
+  /api/v1/posts/{post_id}/comments:
     post:
       consumes:
       - application/json

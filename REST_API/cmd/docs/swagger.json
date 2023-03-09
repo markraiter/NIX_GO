@@ -7,9 +7,9 @@
         "version": "1.0.0."
     },
     "host": "localhost:8080",
-    "basePath": "/",
+    "basePath": "/api/v1",
     "paths": {
-        "/comments/{id}": {
+        "/api/v1/comments/{id}": {
             "put": {
                 "description": "Update a comment in the database by ID.",
                 "consumes": [
@@ -107,7 +107,7 @@
                 }
             }
         },
-        "/posts": {
+        "/api/v1/posts": {
             "get": {
                 "description": "Get all posts from the database.",
                 "consumes": [
@@ -184,7 +184,7 @@
                 }
             }
         },
-        "/posts/{id}": {
+        "/api/v1/posts/{id}": {
             "get": {
                 "description": "Get a post from the database by ID.",
                 "consumes": [
@@ -318,7 +318,7 @@
                 }
             }
         },
-        "/posts/{post_id}/comments": {
+        "/api/v1/posts/{post_id}/comments": {
             "post": {
                 "description": "Create a new comment for a post with the specified data.",
                 "consumes": [

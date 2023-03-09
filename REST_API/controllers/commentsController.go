@@ -25,7 +25,7 @@ import (
 // @Failure 400 {string} string "Invalid comment data"
 // @Failure 404 {string} string "Post not found"
 // @Failure 500 {string} string "Error creating comment"
-// @Router /posts/{post_id}/comments [post]
+// @Router /api/v1/posts/{post_id}/comments [post]
 func CreateComment(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("postId"))
@@ -66,7 +66,7 @@ func CreateComment(db *gorm.DB) echo.HandlerFunc {
 // @Failure 400 {string} string "Invalid comment data"
 // @Failure 404 {string} string "Comment not found"
 // @Failure 500 {string} string "Error updating comment"
-// @Router /comments/{id} [put]
+// @Router /api/v1/comments/{id} [put]
 func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		commentID, err := strconv.Atoi(c.Param("id"))
@@ -102,7 +102,7 @@ func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 // @Success 204 "Comment deleted successfully"
 // @Failure 404 {string} string "Comment not found"
 // @Failure 500 {string} string "Error deleting comment"
-// @Router /comments/{id} [delete]
+// @Router /api/v1/comments/{id} [delete]
 func DeleteComment(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		commentID, err := strconv.Atoi(c.Param("id"))

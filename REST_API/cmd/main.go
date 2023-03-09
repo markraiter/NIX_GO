@@ -22,7 +22,7 @@ func init() {
 // @description Example REST_API for demonstrating Swagger with Echo framework.
 // @version 1.0.0.
 // @host localhost:8080
-// @basePath /
+// @basePath /api/v1
 func main() {
 	e := echo.New()
 
@@ -31,16 +31,16 @@ func main() {
 	e.GET("/swagger/*", swagHandler)
 
 	// Operations with posts
-	e.GET("/posts", controllers.GetPosts(initializers.DB))
-	e.GET("/posts/:id", controllers.CreatePost(initializers.DB))
-	e.POST("/posts", controllers.GetPosts(initializers.DB))
-	e.PUT("/posts/:id", controllers.UpdatePost(initializers.DB))
-	e.DELETE("/posts/:id", controllers.DeletePost(initializers.DB))
+	e.GET("/api/v1/posts", controllers.GetPosts(initializers.DB))
+	e.GET("/api/v1/posts/:id", controllers.CreatePost(initializers.DB))
+	e.POST("/api/v1/posts", controllers.GetPosts(initializers.DB))
+	e.PUT("/api/v1/posts/:id", controllers.UpdatePost(initializers.DB))
+	e.DELETE("/api/v1/posts/:id", controllers.DeletePost(initializers.DB))
 
 	//Operations with comments
-	e.POST("/posts/:postId/comments", controllers.CreateComment(initializers.DB))
-	e.PUT("/comments/:id", controllers.UpdateComment(initializers.DB))
-	e.DELETE("/comments/:id", controllers.DeleteComment(initializers.DB))
+	e.POST("/api/v1/posts/:postId/comments", controllers.CreateComment(initializers.DB))
+	e.PUT("/api/v1/comments/:id", controllers.UpdateComment(initializers.DB))
+	e.DELETE("/api/v1/comments/:id", controllers.DeleteComment(initializers.DB))
 
 	e.Logger.Fatal(e.Start(os.Getenv("SERVER_PORT")))
 }

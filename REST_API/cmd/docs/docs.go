@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/comments/{id}": {
+        "/api/v1/comments/{id}": {
             "put": {
                 "description": "Update a comment in the database by ID.",
                 "consumes": [
@@ -113,7 +113,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/posts": {
+        "/api/v1/posts": {
             "get": {
                 "description": "Get all posts from the database.",
                 "consumes": [
@@ -190,7 +190,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/posts/{id}": {
+        "/api/v1/posts/{id}": {
             "get": {
                 "description": "Get a post from the database by ID.",
                 "consumes": [
@@ -324,7 +324,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/posts/{post_id}/comments": {
+        "/api/v1/posts/{post_id}/comments": {
             "post": {
                 "description": "Create a new comment for a post with the specified data.",
                 "consumes": [
@@ -435,7 +435,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0.",
 	Host:             "localhost:8080",
-	BasePath:         "/",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Echo Swagger Example REST_API",
 	Description:      "Example REST_API for demonstrating Swagger with Echo framework.",

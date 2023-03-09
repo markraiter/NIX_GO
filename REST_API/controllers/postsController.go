@@ -23,7 +23,7 @@ import (
 // @Produce  xml
 // @Success 200 {array} models.Post
 // @Failure 500 {string} string "Error fetching post"
-// @Router /posts [get]
+// @Router /api/v1/posts [get]
 func GetPosts(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		responseType := c.QueryParam("type")
@@ -61,7 +61,7 @@ func GetPosts(db *gorm.DB) echo.HandlerFunc {
 // @Success 201 {object} models.Post
 // @Failure 400 {string} string "Invalid post data"
 // @Failure 500 {string} string "Error creating post"
-// @Router /posts [post]
+// @Router /api/v1/posts [post]
 func CreatePost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		post := new(models.Post)
@@ -87,7 +87,7 @@ func CreatePost(db *gorm.DB) echo.HandlerFunc {
 // @Param id path int true "Post ID"
 // @Success 200 {object} models.Post
 // @Failure 404 {string} string "Post not found"
-// @Router /posts/{id} [get]
+// @Router /api/v1/posts/{id} [get]
 func GetPost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("id"))
@@ -117,7 +117,7 @@ func GetPost(db *gorm.DB) echo.HandlerFunc {
 // @Failure 400 {string} string "Invalid post data"
 // @Failure 404 {string} string "Post not found"
 // @Failure 500 {string} string "Error updating post"
-// @Router /posts/{id} [put]
+// @Router /api/v1/posts/{id} [put]
 func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("id"))
@@ -153,7 +153,7 @@ func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 // @Success 204 "Post deleted successfully"
 // @Failure 404 {string} string "Post not found"
 // @Failure 500 {string} string "Error deleting post"
-// @Router /posts/{id} [delete]
+// @Router /api/v1/posts/{id} [delete]
 func DeletePost(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		postID, err := strconv.Atoi(c.Param("id"))

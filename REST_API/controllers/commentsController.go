@@ -7,6 +7,8 @@ import (
 	"example.com/REST_API/initializers"
 	"example.com/REST_API/models"
 	_ "example.com/REST_API/cmd/docs"
+	_ "github.com/swaggo/swag"
+    _ "github.com/swaggo/echo-swagger"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -18,7 +20,7 @@ import (
 // @Produce  json
 // @Param post_id path int true "Post ID"
 // @Param comment body Comment true "Comment data"
-// @Success 201 {object} models.Comment
+// @Success 201 {object} example.com/REST_API/models/models.Comment
 // @Failure 400 {string} string "Invalid comment data"
 // @Failure 404 {string} string "Post not found"
 // @Failure 500 {string} string "Error creating comment"
@@ -58,7 +60,7 @@ func CreateComment(db *gorm.DB) echo.HandlerFunc {
 // @Produce  json
 // @Param id path int true "Comment ID"
 // @Param comment body Comment true "Comment data"
-// @Success 200 {object} models.Comment
+// @Success 200 {object} example.com/REST_API/models/models.Comment
 // @Failure 400 {string} string "Invalid comment data"
 // @Failure 404 {string} string "Comment not found"
 // @Failure 500 {string} string "Error updating comment"

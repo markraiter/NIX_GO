@@ -12,3 +12,4 @@ type Post struct {
 	Body   string `json:"body" xml:"body"`
 	Comments []Comment `json:"comments" xml:"comments"`
 }
+

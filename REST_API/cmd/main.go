@@ -7,6 +7,7 @@ import (
 	"example.com/REST_API/initializers"
 	"github.com/labstack/echo/v4"
 	"github.com/swaggo/echo-swagger"
+	_ "github.com/swaggo/swag"
 
 	_ "example.com/REST_API/cmd/docs"
 )

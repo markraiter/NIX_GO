@@ -8,6 +8,8 @@ import (
 	"example.com/REST_API/initializers"
 	"example.com/REST_API/models"
 	_ "example.com/REST_API/cmd/docs"
+	_ "github.com/swaggo/swag"
+	_ "github.com/swaggo/echo-swagger"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -17,7 +19,7 @@ import (
 // @Description Get all posts from the database.
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} models.Post
+// @Success 200 {array} example.com/REST_API/models/models.Post
 // @Failure 500 {string} string "Error fetching post"
 // @Router /posts [get]
 func GetPosts(db *gorm.DB) echo.HandlerFunc {
@@ -53,7 +55,7 @@ func GetPosts(db *gorm.DB) echo.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param post body Post true "Post data"
-// @Success 201 {object} models.Post
+// @Success 201 {object} example.com/REST_API/models/models.Post
 // @Failure 400 {string} string "Invalid post data"
 // @Failure 500 {string} string "Error creating post"
 // @Router /posts [post]
@@ -79,7 +81,7 @@ func CreatePost(db *gorm.DB) echo.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Post ID"
-// @Success 200 {object} models.Post
+// @Success 200 {object} example.com/REST_API/models/models.Post
 // @Failure 404 {string} string "Post not found"
 // @Router /posts/{id} [get]
 func GetPost(db *gorm.DB) echo.HandlerFunc {
@@ -106,7 +108,7 @@ func GetPost(db *gorm.DB) echo.HandlerFunc {
 // @Produce  json
 // @Param id path int true "Post ID"
 // @Param post body Post true "Post data"
-// @Success 200 {object} models.Post
+// @Success 200 {object} example.com/REST_API/models/models.Post
 // @Failure 400 {string} string "Invalid post data"
 // @Failure 404 {string} string "Post not found"
 // @Failure 500 {string} string "Error updating post"

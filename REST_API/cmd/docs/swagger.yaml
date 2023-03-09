@@ -1,21 +1,9 @@
 basePath: /
 definitions:
-  gorm.DeletedAt:
-    properties:
-      time:
-        type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
-    type: object
   models.Comment:
     properties:
       body:
         type: string
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
       email:
         type: string
       id:
@@ -24,8 +12,6 @@ definitions:
         type: string
       postId:
         type: integer
-      updatedAt:
-        type: string
     type: object
   models.Post:
     properties:
@@ -35,15 +21,9 @@ definitions:
         items:
           $ref: '#/definitions/models.Comment'
         type: array
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
       id:
         type: integer
       title:
-        type: string
-      updatedAt:
         type: string
       userId:
         type: integer
@@ -80,6 +60,8 @@ paths:
           schema:
             type: string
       summary: Delete a comment by ID
+      tags:
+      - Comments
     put:
       consumes:
       - application/json
@@ -116,6 +98,8 @@ paths:
           schema:
             type: string
       summary: Update a comment by ID
+      tags:
+      - Comments
   /posts:
     get:
       consumes:
@@ -123,6 +107,7 @@ paths:
       description: Get all posts from the database.
       produces:
       - application/json
+      - text/xml
       responses:
         "200":
           description: OK
@@ -135,6 +120,8 @@ paths:
           schema:
             type: string
       summary: Get all posts
+      tags:
+      - Posts
     post:
       consumes:
       - application/json
@@ -162,6 +149,8 @@ paths:
           schema:
             type: string
       summary: Create a new post
+      tags:
+      - Posts
   /posts/{id}:
     delete:
       consumes:
@@ -187,6 +176,8 @@ paths:
           schema:
             type: string
       summary: Delete a post by ID
+      tags:
+      - Posts
     get:
       consumes:
       - application/json
@@ -209,6 +200,8 @@ paths:
           schema:
             type: string
       summary: Get a post by ID
+      tags:
+      - Posts
     put:
       consumes:
       - application/json
@@ -245,6 +238,8 @@ paths:
           schema:
             type: string
       summary: Update a post by ID
+      tags:
+      - Posts
   /posts/{post_id}/comments:
     post:
       consumes:
@@ -282,4 +277,6 @@ paths:
           schema:
             type: string
       summary: Create a new comment for a post
+      tags:
+      - Comments
 swagger: "2.0"

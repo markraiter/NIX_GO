@@ -24,6 +24,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Comments"
+                ],
                 "summary": "Update a comment by ID",
                 "parameters": [
                     {
@@ -78,6 +81,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Comments"
+                ],
                 "summary": "Delete a comment by ID",
                 "parameters": [
                     {
@@ -114,7 +120,11 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "produces": [
-                    "application/json"
+                    "application/json",
+                    "text/xml"
+                ],
+                "tags": [
+                    "Posts"
                 ],
                 "summary": "Get all posts",
                 "responses": {
@@ -142,6 +152,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Posts"
                 ],
                 "summary": "Create a new post",
                 "parameters": [
@@ -186,6 +199,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Posts"
+                ],
                 "summary": "Get a post by ID",
                 "parameters": [
                     {
@@ -218,6 +234,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Posts"
                 ],
                 "summary": "Update a post by ID",
                 "parameters": [
@@ -273,6 +292,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Posts"
+                ],
                 "summary": "Delete a post by ID",
                 "parameters": [
                     {
@@ -310,6 +332,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Comments"
                 ],
                 "summary": "Create a new comment for a post",
                 "parameters": [
@@ -360,29 +385,11 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
-                }
-            }
-        },
         "models.Comment": {
             "type": "object",
             "properties": {
                 "body": {
                     "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "email": {
                     "type": "string"
@@ -395,9 +402,6 @@ const docTemplate = `{
                 },
                 "postId": {
                     "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
@@ -413,19 +417,10 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.Comment"
                     }
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "id": {
                     "type": "integer"
                 },
                 "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
                     "type": "string"
                 },
                 "userId": {

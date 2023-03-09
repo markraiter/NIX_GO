@@ -18,6 +18,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Comments"
+                ],
                 "summary": "Update a comment by ID",
                 "parameters": [
                     {
@@ -72,6 +75,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Comments"
+                ],
                 "summary": "Delete a comment by ID",
                 "parameters": [
                     {
@@ -108,7 +114,11 @@
                     "application/json"
                 ],
                 "produces": [
-                    "application/json"
+                    "application/json",
+                    "text/xml"
+                ],
+                "tags": [
+                    "Posts"
                 ],
                 "summary": "Get all posts",
                 "responses": {
@@ -136,6 +146,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Posts"
                 ],
                 "summary": "Create a new post",
                 "parameters": [
@@ -180,6 +193,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Posts"
+                ],
                 "summary": "Get a post by ID",
                 "parameters": [
                     {
@@ -212,6 +228,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Posts"
                 ],
                 "summary": "Update a post by ID",
                 "parameters": [
@@ -267,6 +286,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Posts"
+                ],
                 "summary": "Delete a post by ID",
                 "parameters": [
                     {
@@ -304,6 +326,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Comments"
                 ],
                 "summary": "Create a new comment for a post",
                 "parameters": [
@@ -354,29 +379,11 @@
         }
     },
     "definitions": {
-        "gorm.DeletedAt": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
-                }
-            }
-        },
         "models.Comment": {
             "type": "object",
             "properties": {
                 "body": {
                     "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "email": {
                     "type": "string"
@@ -389,9 +396,6 @@
                 },
                 "postId": {
                     "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
@@ -407,19 +411,10 @@
                         "$ref": "#/definitions/models.Comment"
                     }
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "id": {
                     "type": "integer"
                 },
                 "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
                     "type": "string"
                 },
                 "userId": {

@@ -10,6 +10,7 @@ import (
 	_ "github.com/swaggo/swag"
 
 	_ "example.com/REST_API/cmd/docs"
+	_ "example.com/REST_API/models"
 )
 
 func init() {

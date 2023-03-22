@@ -23,6 +23,9 @@ func init() {
 // @version 1.0.0.
 // @host localhost:8080
 // @basePath /api/v1
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	e := echo.New()
 
@@ -30,17 +33,29 @@ func main() {
 	swagHandler := echoSwagger.WrapHandler
 	e.GET("/swagger/*", swagHandler)
 
+	// Group of routes that require authentification
+	authGroup := e.Group("/api")
+	authGroup.Use(controllers.JWTMiddleware)
+
+	/////////////////ENDPOINTS/////////////////
+
+	//Registration
+	e.POST("/registration", controllers.Registration(initializers.DB))
+
+	//Login
+	e.POST("/login", controllers.Login(initializers.DB))
+
 	// Operations with posts
-	e.GET("/api/v1/posts", controllers.GetPosts(initializers.DB))
-	e.GET("/api/v1/posts/:id", controllers.CreatePost(initializers.DB))
-	e.POST("/api/v1/posts", controllers.GetPosts(initializers.DB))
-	e.PUT("/api/v1/posts/:id", controllers.UpdatePost(initializers.DB))
-	e.DELETE("/api/v1/posts/:id", controllers.DeletePost(initializers.DB))
+	authGroup.GET("/v1/posts", controllers.GetPosts(initializers.DB))
+	authGroup.GET("/v1/posts/:id", controllers.CreatePost(initializers.DB))
+	authGroup.POST("/v1/posts", controllers.GetPosts(initializers.DB))
+	authGroup.PUT("/v1/posts/:id", controllers.UpdatePost(initializers.DB))
+	authGroup.DELETE("/v1/posts/:id", controllers.DeletePost(initializers.DB))
 
 	//Operations with comments
-	e.POST("/api/v1/posts/:postId/comments", controllers.CreateComment(initializers.DB))
-	e.PUT("/api/v1/comments/:id", controllers.UpdateComment(initializers.DB))
-	e.DELETE("/api/v1/comments/:id", controllers.DeleteComment(initializers.DB))
+	authGroup.POST("/v1/posts/:postId/comments", controllers.CreateComment(initializers.DB))
+	authGroup.PUT("/v1/comments/:id", controllers.UpdateComment(initializers.DB))
+	authGroup.DELETE("/v1/comments/:id", controllers.DeleteComment(initializers.DB))
 
 	e.Logger.Fatal(e.Start(os.Getenv("SERVER_PORT")))
 }

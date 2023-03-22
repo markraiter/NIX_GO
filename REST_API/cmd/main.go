@@ -36,6 +36,8 @@ func main() {
 	// Group of routes that require authentification
 	authGroup := e.Group("/api")
 	authGroup.Use(controllers.JWTMiddleware)
+	postGroup := authGroup.Group("/v1/posts")
+	commentsGroup := authGroup.Group("/v1/posts/:postId/comments")
 
 	/////////////////ENDPOINTS/////////////////
 
@@ -46,16 +48,16 @@ func main() {
 	e.POST("/login", controllers.Login(initializers.DB))
 
 	// Operations with posts
-	authGroup.GET("/v1/posts", controllers.GetPosts(initializers.DB))
-	authGroup.GET("/v1/posts/:id", controllers.CreatePost(initializers.DB))
-	authGroup.POST("/v1/posts", controllers.GetPosts(initializers.DB))
-	authGroup.PUT("/v1/posts/:id", controllers.UpdatePost(initializers.DB))
-	authGroup.DELETE("/v1/posts/:id", controllers.DeletePost(initializers.DB))
+	postGroup.GET("", controllers.GetPosts(initializers.DB))
+	postGroup.GET("/:id", controllers.CreatePost(initializers.DB))
+	postGroup.POST("", controllers.GetPosts(initializers.DB))
+	postGroup.PUT("/:id", controllers.UpdatePost(initializers.DB))
+	postGroup.DELETE("/:id", controllers.DeletePost(initializers.DB))
 
 	//Operations with comments
-	authGroup.POST("/v1/posts/:postId/comments", controllers.CreateComment(initializers.DB))
-	authGroup.PUT("/v1/comments/:id", controllers.UpdateComment(initializers.DB))
-	authGroup.DELETE("/v1/comments/:id", controllers.DeleteComment(initializers.DB))
+	commentsGroup.POST("", controllers.CreateComment(initializers.DB))
+	commentsGroup.PUT("/:id", controllers.UpdateComment(initializers.DB))
+	commentsGroup.DELETE("/:id", controllers.DeleteComment(initializers.DB))
 
 	e.Logger.Fatal(e.Start(os.Getenv("SERVER_PORT")))
 }

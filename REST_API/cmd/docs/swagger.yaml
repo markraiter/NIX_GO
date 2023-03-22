@@ -59,6 +59,8 @@ paths:
           description: Error deleting comment
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Delete a comment by ID
       tags:
       - Comments
@@ -97,6 +99,8 @@ paths:
           description: Error updating comment
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Update a comment by ID
       tags:
       - Comments
@@ -119,6 +123,8 @@ paths:
           description: Error fetching post
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Get all posts
       tags:
       - Posts
@@ -148,6 +154,8 @@ paths:
           description: Error creating post
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Create a new post
       tags:
       - Posts
@@ -175,6 +183,8 @@ paths:
           description: Error deleting post
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Delete a post by ID
       tags:
       - Posts
@@ -199,6 +209,8 @@ paths:
           description: Post not found
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Get a post by ID
       tags:
       - Posts
@@ -237,6 +249,8 @@ paths:
           description: Error updating post
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Update a post by ID
       tags:
       - Posts
@@ -276,6 +290,8 @@ paths:
           description: Error creating comment
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: Create a new comment for a post
       tags:
       - Comments

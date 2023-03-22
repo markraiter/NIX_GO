@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/api/v1/comments/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update a comment in the database by ID.",
                 "consumes": [
                     "application/json"
@@ -74,6 +79,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a comment from the database by ID.",
                 "consumes": [
                     "application/json"
@@ -115,6 +125,11 @@ const docTemplate = `{
         },
         "/api/v1/posts": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all posts from the database.",
                 "consumes": [
                     "application/json"
@@ -146,6 +161,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new post with the specified data.",
                 "consumes": [
                     "application/json"
@@ -192,6 +212,11 @@ const docTemplate = `{
         },
         "/api/v1/posts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a post from the database by ID.",
                 "consumes": [
                     "application/json"
@@ -228,6 +253,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update a post in the database by ID.",
                 "consumes": [
                     "application/json"
@@ -285,6 +315,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a post from the database by ID.",
                 "consumes": [
                     "application/json"
@@ -326,6 +361,11 @@ const docTemplate = `{
         },
         "/api/v1/posts/{post_id}/comments": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new comment for a post with the specified data.",
                 "consumes": [
                     "application/json"

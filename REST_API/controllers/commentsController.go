@@ -21,6 +21,7 @@ import (
 // @Produce  json
 // @Param post_id path int true "Post ID"
 // @Param comment body models.Comment true "Comment data"
+// @Security ApiKeyAuth
 // @Success 201 {object} models.Comment
 // @Failure 400 {string} string "Invalid comment data"
 // @Failure 404 {string} string "Post not found"
@@ -62,6 +63,7 @@ func CreateComment(db *gorm.DB) echo.HandlerFunc {
 // @Produce  json
 // @Param id path int true "Comment ID"
 // @Param comment body models.Comment true "Comment data"
+// @Security ApiKeyAuth
 // @Success 200 {object} models.Comment
 // @Failure 400 {string} string "Invalid comment data"
 // @Failure 404 {string} string "Comment not found"
@@ -99,6 +101,7 @@ func UpdateComment(db *gorm.DB) echo.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Comment ID"
+// @Security ApiKeyAuth
 // @Success 204 "Comment deleted successfully"
 // @Failure 404 {string} string "Comment not found"
 // @Failure 500 {string} string "Error deleting comment"

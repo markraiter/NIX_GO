@@ -21,6 +21,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Produce  xml
+// @Security ApiKeyAuth
 // @Success 200 {array} models.Post
 // @Failure 500 {string} string "Error fetching post"
 // @Router /api/v1/posts [get]
@@ -58,6 +59,7 @@ func GetPosts(db *gorm.DB) echo.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param post body models.Post true "Post data"
+// @Security ApiKeyAuth
 // @Success 201 {object} models.Post
 // @Failure 400 {string} string "Invalid post data"
 // @Failure 500 {string} string "Error creating post"
@@ -85,6 +87,7 @@ func CreatePost(db *gorm.DB) echo.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Post ID"
+// @Security ApiKeyAuth
 // @Success 200 {object} models.Post
 // @Failure 404 {string} string "Post not found"
 // @Router /api/v1/posts/{id} [get]
@@ -113,6 +116,7 @@ func GetPost(db *gorm.DB) echo.HandlerFunc {
 // @Produce  json
 // @Param id path int true "Post ID"
 // @Param post body models.Post true "Post data"
+// @Security ApiKeyAuth
 // @Success 200 {object} models.Post
 // @Failure 400 {string} string "Invalid post data"
 // @Failure 404 {string} string "Post not found"
@@ -150,6 +154,7 @@ func UpdatePost(db *gorm.DB) echo.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Post ID"
+// @Security ApiKeyAuth
 // @Success 204 "Post deleted successfully"
 // @Failure 404 {string} string "Post not found"
 // @Failure 500 {string} string "Error deleting post"

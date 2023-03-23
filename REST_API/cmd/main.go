@@ -49,8 +49,8 @@ func main() {
 
 	// Operations with posts
 	postGroup.GET("", controllers.GetPosts(initializers.DB))
-	postGroup.GET("/:id", controllers.CreatePost(initializers.DB))
-	postGroup.POST("", controllers.GetPosts(initializers.DB))
+	postGroup.GET("/:id", controllers.GetPost(initializers.DB))
+	postGroup.POST("", controllers.CreatePost(initializers.DB))
 	postGroup.PUT("/:id", controllers.UpdatePost(initializers.DB))
 	postGroup.DELETE("/:id", controllers.DeletePost(initializers.DB))
 

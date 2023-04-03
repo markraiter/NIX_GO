@@ -17,16 +17,17 @@ import (
 )
 
 func generateToken(u *models.User) (string, error) {
-	claims := jwt.MapClaims {
-		"id": u.ID,
-		"username": u.Username,
-		"email": u.Email,
-		"exp": time.Now().Add(time.Hour * 72).Unix(),
+	claims := jwt.MapClaims{
+		"id":       u.ID,
+		"email":    u.Email,
+		"password": u.Password,
+		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	tokenString, err := token.SignedString([]byte("secret"))
+
 	if err != nil {
 		return "", err
 	}
@@ -45,18 +46,19 @@ func generateToken(u *models.User) (string, error) {
 // @Failure 400 {object} error "Bad request"
 // @Failure 500 {object} error "Internal server error"
 // @Router /registration [post]
-func Registration(db *gorm.DB) echo.HandlerFunc {
+func Register(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		user := new(models.User)
+
 		if err := c.Bind(user); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string {
+			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": err.Error(),
 			})
 		}
 
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
 				"error": err.Error(),
 			})
 		}
@@ -64,21 +66,12 @@ func Registration(db *gorm.DB) echo.HandlerFunc {
 		user.Password = string(hashedPassword)
 
 		if err := db.Create(&user).Error; err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
 				"error": err.Error(),
 			})
 		}
 
-		token, err := generateToken(user)
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string {
-				"error": err.Error(),
-			})
-		}
-
-		return c.JSON(http.StatusOK, map[string]string {
-			"token": token,
-		})
+		return c.JSON(http.StatusCreated, user)
 	}
 }
 
@@ -97,27 +90,30 @@ func Registration(db *gorm.DB) echo.HandlerFunc {
 func Login(db *gorm.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		user := new(models.User)
-		if err := c.Bind(user); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string {
+
+		if err := c.Bind(&user); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": err.Error(),
 			})
 		}
 
 		var dbUser models.User
-		if err := db.Where("email = ?", user.Email).First(dbUser).Error; err != nil {
-			return c.JSON(http.StatusUnauthorized, map[string]string {
-				"error": "Invalid input!",
+
+		if err := db.Where("email = ?", user.Email).First(&dbUser).Error; err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]string{
+				"error": "invalid input",
 			})
 		}
 
 		token, err := generateToken(&dbUser)
+
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string {
+			return c.JSON(http.StatusInternalServerError, map[string]string{
 				"error": err.Error(),
 			})
 		}
 
-		return c.JSON(http.StatusOK, map[string]string {
+		return c.JSON(http.StatusOK, map[string]string{
 			"token": token,
 		})
 	}

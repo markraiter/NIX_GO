@@ -42,7 +42,7 @@ func main() {
 	/////////////////ENDPOINTS/////////////////
 
 	//Registration
-	e.POST("/registration", controllers.Registration(initializers.DB))
+	e.POST("/registration", controllers.Register(initializers.DB))
 
 	//Login
 	e.POST("/login", controllers.Login(initializers.DB))
